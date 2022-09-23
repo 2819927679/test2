@@ -1,0 +1,144 @@
+Tool:			Incident Respone Triage:    (GUI)
+
+Script Function:	Forensic Triage Application
+
+Version:		2.16.04.06       (Version 2, Last updated: 2016 Apr 06)
+
+Original Author:	Michael Ahrendt (TriageIR v.851 last uploaded\modified 9 Nov 2012)
+                        https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/triage-ir/TriageIR%20v.851.zip
+
+Forked and Currently
+Maintained by:      Alain Martel (Oct 2015)
+		    https://github.com/AJMartel/IRTriage
+
+Description:	IRTriage is intended for incident responders who need to gather host data rapidly.
+		The tool will run a plethora of commands automatically based on selection.
+		Data will copy to wherever the script is stored.
+		IRTriage is intended to be run from a flash drive locally on the machine, or
+		via a network share (example: connected via RDP).
+
+Changes from triage-ir v0.851 Michael Ahrendt (last uploaded\modified 9 Nov 2012)
+
+•Renamed project to IRTriage
+•Versioning has changed to v2.[YY.MM.DD] for easier identification of last changes.
+•Updated the project to currently available tools.
+•Fixed the "commands executed" logging errors
+•Changed "Incident Log.txt" to "IncidentLog.csv" (TAB delimited)
+•Changed Compile time tools folder to ".\Compile\Tools\" (Local to script)
+•Fixed ini file open dialog to open in local script directory
+
+
+Version 2016.02.24 
+IRTriage is now truly compatible with the following versions of Windows:
+•Windows Workstations "WIN_10", "WIN_81", "WIN_8", "WIN_7", "WIN_VISTA", "WIN_XP", "WIN_XPe",
+•Windows Servers: "WIN_2016", "WIN_2012R2", "WIN_2012", "WIN_2008R2", "WIN_2008", "WIN_2003".
+
+
+Version 2016.02.26 
+Started to add new funtions:
+
+*Processes()
+    - tcpvcon -anc -accepteula > Process2PortMap.csv
+    - tasklist /SVC /FO CSV > Processe2exeMap.csv
+    - wmic /output:ProcessesCmd.csv process get Caption,Commandline,Processid,ParentProcessId,SessionId /format:csv
+
+*SystemInfo()
+    - wmic /output:InstallList.csv product get /format:csv
+    - wmic /output:InstallHotfix.csv qfe get caption,csname,description,hotfixid,installedby,installedon /format:csv
+
+*Prefetch
+    **WinPrefetchView /Folder Prefetch /stab Prefetch.csv 
+
+*Options()
+    - mftdump.exe /l /m ComputerName /o ComputerName-MFT_Dump.csv $MFTcopy
+
+TriageGUI()
+    - CSVFileView.exe IncidentLog.csv ;Added Checkbox to view IncidentLog after Acquisition
+    - cmd.exe                         ;Added Checkbox to open IRTriage commandline after Acquisition
+
+
+Version 2016.03.08
+•Added a custom compiled version of ReactOS's "cmd.exe" based on v0.4.0
+It can now use Linux equivalent commands: 
+clear = cls
+cp = copy
+df = free
+env = set
+ln = mklink
+ls = dir
+mv = move
+pwd = cd, chdir
+rm = delete, del, erase
+sleep = pause
+uname = ver, version
+vmstat = memory, mem
+
+
+Version 2016.03.08
+•Started to cleanup the code, trying to make it easier to modualarize.
+•Added the option at compile time to use HBGary's FDpro (Commercial) or Moonsol's (Free) memory acquisition software. ?If you have HBGary's FDpro place it under the .\Compile\Tools folder in place of the "Zero byte" size file, is easy to switch back to Moonsol's memory acquisition software by replacing the FDpro.exe with a "less than 100 byte" sized file:-)
+
+
+Version 2016.03.10
+•Continued cleanup of the code, removed unused Function CommandROSLOG()
+•Added $MFT parce to CSV
+•Added ability to view IncidentLog.csv after acquisition completed.
+
+
+Version 2016.03.11
+•Updated cmd.exe
+•Added ability to open IRTriage's cmd.exe after acquisition completed.
+
+
+Version 2016.03.14
+•Added Prefetch parce to CSV
+
+
+Version 2016.03.24
+•Added IRTriage Update in tools menu (Update buttons mixed up)
+
+
+Version 2016.03.28
+•Fixed IRTriage Update (Yes=Download Update, No=Display Update Info, Cancel=Cancel Update)
+
+
+Version 2016.03.29
+•Integrate Didier Stevens's new commands into the latest version of ReactOS's "cmd.exe".: 
+ privilege:  This command enables the backup privilege. 
+             "To be able to enable a privilege, you need to have the privilege" 
+             If you’re an administrator, you have the backup privilege; 
+             and can elevate the process (cmd.exe).
+ info:       This command gives the MAC timestamps, file attributes and SDDL of the given file/folder.
+ Both new commands are invaluable for a Forensic Analyst.
+•Source for IRTriage command processor. https://github.com/AJMartel/IRTriageCMD
+
+
+Version 2016.03.30
+•Fixed Volume Shadow Copy Functions
+•Updated IRTriage command processor (Version 4.1-20160330-Release)
+•Source for IRTriage command processor. https://github.com/AJMartel/IRTriageCMD
+
+
+Version 2016.03.31
+•Fixed Hanging while doing Volume Shadow Copy Functions
+•Source for IRTriage command processor. https://github.com/AJMartel/IRTriageCMD
+
+
+Version 2016.04.01
+•Added CaseLog() Creates Collection.log with Acquisition information 
+•Fixed Popups when collecting Volume Shadow Copy Prefetch files
+•Updated cmd.exe
+
+Version 2016.04.06
+•Added Proceses() tasklist /M /FO CSV > ProcesseDLL.csv 
+•Added AccountInfo() net localgroup administrators > AccountAdminList.txt
+
+Version 2016.04.07
+•Added LogFilegrab() icat.exe \\.\c: 2 > $LogFilecopy 
+
+Version 2016.04.08
+•Added CVE_2014_1812() gp3finder_v4.0.exe -A -l -o CVE_2014_1812.txt 
+
+Version 2016.04.18 
+•Added software to remote chat through text file
+
